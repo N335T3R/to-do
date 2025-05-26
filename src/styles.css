@@ -24,12 +24,12 @@ body {
     width: 100vw;
 }
 
+
+
 .sidebar {
     display: flex;
     flex-direction: column;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-bottom: 1rem;
+    padding: 1rem;
 
     background-color: #333;
 }
@@ -37,17 +37,17 @@ body {
 header {
     display: flex;
     margin-bottom: 3rem;
-    height: fit-content;
+    height: 4rem;
 }
-header > h1{
-    margin-top: 2rem;
+header > h1 {
+    margin-top: 1rem;
     color: var(--taskrGreen);
     font-family: clean;
 }
 .icon-div {
     width: 5rem;    
     background-image: url("./assets/images/taskr.png");
-    background-size: 5rem;
+    background-size: 3rem;
     background-repeat: no-repeat;
 }
 
@@ -59,7 +59,7 @@ header > h1{
     margin-bottom: 2rem;
 }
 .new-btn:hover {
-    border: 1px solid white;
+    cursor: pointer;
 }
 
 .project-list-div {
@@ -69,4 +69,42 @@ header > h1{
     color: var(--taskrGreen);
     font-family: clean;
     margin-bottom: 1rem;
+}
+.project-list-div > ul {
+    display: grid;
+    grid-template-columns: 1fr 2rem;
+    padding-right: 1rem;
+}
+.project-list > li {
+    color: white;
+    list-style: none;
+    margin-bottom: 0.25rem;
+}
+.project-list > li:hover {
+    cursor: pointer;
+    color: var(--taskrGreen);
+}
+.project-list > img {
+    width: 1rem;
+}
+
+
+
+
+main {
+    display: grid;
+    grid-template-rows: repeat(2, 50%);
+    padding: 2rem;
+}
+main > button {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    border: none;
+    background-color: var(--taskrGreen);
+    border-radius: 0.15rem;
+}
+main > * > h2 {
+    /* color: var(--taskrGreen); */
+    font-family: clean;
 }
