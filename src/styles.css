@@ -91,6 +91,45 @@ header > h1 {
 
 
 
+.new-project-modal {
+    place-self: center;
+    padding: 1rem;
+    background-color: #333;
+    color: var(--taskrGreen);
+    border-radius: 0.5rem;
+    justify-items: center;
+    /* scrollbar-width: none; */
+    min-height: fit-content;
+}
+.new-project-modal > button {
+    background-color: var(--taskrGreen);
+}
+.new-project-modal > h2 {
+    font-family: clean;
+    letter-spacing: .1rem;
+    margin: 1rem;
+}
+.new-project-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);  
+}
+.close-project-modal {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.new-project-form {
+    display: grid;
+    font-size: 1.25rem;
+}
+.new-project-form > button {
+    background-color: var(--taskrGreen);
+}
+.new-project-form > input, textarea {
+    margin-bottom: 1rem;
+}
+
+
+
 
 main {
     display: grid;

@@ -98,6 +98,9 @@ class DomMaster {
 
     createMainCard(item) {
         this.clearMain();
+        const h = document.createElement('h2');
+        h.textContent = "Tasks";
+        this.subMain.appendChild(h);
 
         const title = document.createElement('h2');
         const description = document.createElement('p');
@@ -223,8 +226,14 @@ function mainFuncton() {
         domMaster.clearMain();
     });
 
-
-
+    const newProjectModal = document.getElementById('new-project-modal')
+    newBtn.addEventListener('click', () => {
+        newProjectModal.showModal();
+    });
+    const closeProjectModal = document.getElementById("close-project-modal");
+    closeProjectModal.addEventListener('click', () => {
+        newProjectModal.close();
+    });
 
 
     storageMaster.firstTodo(

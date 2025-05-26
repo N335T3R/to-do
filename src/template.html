@@ -23,6 +23,28 @@
     </div>
 
 
+    <dialog id="new-project-modal" class="new-project-modal">
+        <button class="close-project-modal" id="close-project-modal">X</button>
+
+        <h2>New Project</h2>
+        <form action="GET" class="new-project-form" id="new-project-form">
+            <label for="project-title">Title</label>
+            <input type="text" name="project-title" id="project-title" placeholder="Project Title">
+
+            <label for="project-description">Description</label>
+            <textarea type="text" name="project-description" id="project-description" placeholder="This is a description of my project"></textarea>
+
+            <label for="project-due-date">Due Date</label>
+            <input type="date" name="project-due-date" id="project-due-date">
+
+            <label for="project-priority">Priority</label>
+            <input type="radio">
+
+            <button type="submit" class="project-submit" aria-colcount="project-submit">Submit</button>
+        </form>
+    </dialog>
+
+
     <main>
         <button class="close-btn" id="close-btn" type="button">X</button>
         <div class="project-info-div" id="project-info-div"></div>
