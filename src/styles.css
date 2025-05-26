@@ -80,7 +80,8 @@ header > h1 {
     list-style: none;
     margin-bottom: 0.25rem;
 }
-.project-list > li:hover {
+.project-list > *:hover {
+    user-select: pointer;
     cursor: pointer;
     color: var(--taskrGreen);
 }

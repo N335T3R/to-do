@@ -76,27 +76,24 @@ class StorageMaster {
 }
 
 class DomMaster {
-    constructor(main = null, subMain = null, sidebar = null, list= null, closeBtn = null) {
+    constructor(storage, main = null, subMain = null, sidebar = null, list= null, closeBtn = null) {
+        this.storage = storage;
         this.main = main;
         this.mainContent = main.innerHTML;
-        this.subMain = this.subMain;
+        this.subMain = subMain;
         this.sidebar = sidebar;
         this.list = list;
         this.closeBtn = closeBtn;
+        this.cans = [];
     }
 
     clearMain() {
         this.main.innerHTML = "";
+        this.subMain.innerHTML = "";
     }
 
     restoreMain() {
         this.main.innerHTML = this.mainContent;
-    }
-
-    refreshMain(item) {
-        this.clearMain();
-
-
     }
 
     createMainCard(item) {
@@ -110,6 +107,23 @@ class DomMaster {
 
         this.main.appendChild(title);
         this.main.appendChild(description);
+
+        if (item.items) {
+            item.items.forEach(subItem => {
+                this.createSubCard(subItem);
+            });
+        }
+    }
+
+    createSubCard(subItem) {
+        const title = document.createElement('h3');
+        const description = document.createElement('p');
+
+        title.textContent = subItem.title;
+        description.textContent = subItem.description;
+
+        this.subMain.appendChild(title);
+        this.subMain.appendChild(description);
     }
 
     clearList() {
@@ -128,8 +142,6 @@ class DomMaster {
         this.list.appendChild(li);
     }
 
-    // add eventListener to li to display 
-    // project in main
     createLi(item) {
         let li = document.createElement('li');
         
@@ -145,13 +157,21 @@ class DomMaster {
         return li;
     }
 
+    removeFromList(data) {
+        const li = document.querySelector(`[data-id='${data}']`);
+        document.removeChild(li);
+    }
+
     refreshList(arr) {
         this.clearList();
+        this.cans = [];
 
+        // Repaint UL with list items found in storage
         arr.forEach(item => {
             let li = this.createLi(item);
             const can = new Image();
             can.src = trash;
+            can.li = li;
 
             can.addEventListener('mouseenter', () => {
                 can.src = trashGreen;
@@ -159,10 +179,22 @@ class DomMaster {
             can.addEventListener('mouseleave', () => {
                 can.src = trash;
             });
+            this.cans.push(can);
 
             this.list.appendChild(li);
             this.list.appendChild(can);
         });
+
+        // Set event listener on trashcan to 
+        // delete from Storage then repaint
+        this.cans.forEach(can => {
+            can.addEventListener('click', () => {
+                this.storage.removeItem("id", can.li.dataset.id);
+                this.refreshList(this.storage.returnArray());
+            });
+        });
+
+        this.clearMain();
     }
 }
 
@@ -180,7 +212,8 @@ function mainFuncton() {
     });
 
     const storageMaster = new StorageMaster("todos");
-    const domMaster = new DomMaster(document.getElementById("project-info-div"), 
+    const domMaster = new DomMaster(storageMaster,
+        document.getElementById("project-info-div"), 
         document.getElementById("sub-tasks-div"), 
         document.getElementById("sidebar"), 
         document.getElementById("project-list"), 
@@ -202,7 +235,7 @@ function mainFuncton() {
     storageMaster.addItem(
         new ListItem({
         title: "Paint",
-        description: "Do a Caravaggio master copy"
+        description: "Do a Caravaggio master copy",
     }));
     storageMaster.addSubItem("title", "Paint", {
         title: "Sketch design",
@@ -213,5 +246,7 @@ function mainFuncton() {
     console.log(storageMaster.returnArray());
     domMaster.refreshList(storageMaster.returnArray());
     domMaster.createMainCard(storageMaster.getItem('title', "Paint"));
+
+    console.log(domMaster.storage);
 }
 mainFuncton();
