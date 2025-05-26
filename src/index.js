@@ -7,9 +7,11 @@ import trashGreen from "./assets/images/trash-green.png";
 
 
 class ListItem {
-    constructor ({ title, description }) {
+    constructor ({ title, description, dueDate, priority }) {
         this.title = title;
         this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
         this.id = crypto.randomUUID();
     }
 }
@@ -206,14 +208,7 @@ class DomMaster {
 
 // Execution
 function mainFuncton() {
-    const newBtn = document.getElementById('new-btn');
-    newBtn.addEventListener('mouseenter', () => {
-        newBtn.src = newWhite;
-    });
-    newBtn.addEventListener('mouseleave', () => {
-        newBtn.src = newGreen;
-    });
-
+    // Instatiate Storage and DOM managers
     const storageMaster = new StorageMaster("todos");
     const domMaster = new DomMaster(storageMaster,
         document.getElementById("project-info-div"), 
@@ -222,18 +217,55 @@ function mainFuncton() {
         document.getElementById("project-list"), 
         document.getElementById('close-btn'));
 
+
+
+    // Button eventListeners
+    const newProjectBtn = document.getElementById('new-btn');
+    const newProjectModal = document.getElementById('new-project-modal')
+    const closeProjectModal = document.getElementById("close-project-modal");
     domMaster.closeBtn.addEventListener('click', () => {
         domMaster.clearMain();
     });
 
-    const newProjectModal = document.getElementById('new-project-modal')
-    newBtn.addEventListener('click', () => {
+    newProjectBtn.addEventListener('mouseenter', () => {
+        newProjectBtn.src = newWhite;
+    });
+    newProjectBtn.addEventListener('mouseleave', () => {
+        newProjectBtn.src = newGreen;
+    });
+    newProjectBtn.addEventListener('click', () => {
         newProjectModal.showModal();
     });
-    const closeProjectModal = document.getElementById("close-project-modal");
+
     closeProjectModal.addEventListener('click', () => {
         newProjectModal.close();
     });
+
+
+    // Process New Project Form
+    const newProjectForm = document.getElementById('new-project-form');
+    newProjectForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        newProjectModal.close();
+        
+        // convert form data to new ListItem 
+        const formData = new FormData(newProjectForm);
+        const obj = Object.fromEntries(formData);
+
+        const item = new ListItem({
+            title: obj.projectTitle,
+            description: obj.projectDescription,
+            dueDate: obj.projectDueDate,
+            priority: obj.projectPriority
+        });
+
+        // create new Project
+        storageMaster.addItem(item);
+        domMaster.refreshList(storageMaster.returnArray());
+    });
+
+    
+
 
 
     storageMaster.firstTodo(

@@ -78,7 +78,7 @@ header > h1 {
 .project-list > li {
     color: white;
     list-style: none;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 .project-list > *:hover {
     user-select: pointer;
@@ -119,9 +119,9 @@ header > h1 {
 }
 .new-project-form {
     display: grid;
-    font-size: 1.25rem;
 }
 .new-project-form > button {
+    font-size: 1rem;
     background-color: var(--taskrGreen);
 }
 .new-project-form > input, textarea {
@@ -143,6 +143,7 @@ main > button {
     border: none;
     background-color: var(--taskrGreen);
     border-radius: 0.15rem;
+    cursor: pointer;
 }
 main > * > h2 {
     /* color: var(--taskrGreen); */
