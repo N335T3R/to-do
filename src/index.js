@@ -98,21 +98,48 @@ class DomMaster {
         this.main.innerHTML = this.mainContent;
     }
 
-    createMainCard(item) {
-        this.clearMain();
+    refreshTasks() {
+        this.subMain.innerHTML = "";
+
         const h = document.createElement('h2');
         h.textContent = "Tasks";
         this.subMain.appendChild(h);
+        
+        const newTaskBtn = document.createElement('button');
+        newTaskBtn.src = newGreen;
+        newTaskBtn.addEventListener('mouseenter', () => {
+            newTaskBtn.src = newWhite;
+        });
+        newTaskBtn.addEventListener('mouseleave', () => {
+            newTaskBtn.src = newGreen;
+        });
+    }
 
+    createMainCard(item) {
+        this.clearMain();
+        this.refreshTasks();
+
+        // Create Card
         const title = document.createElement('h2');
         const description = document.createElement('p');
+        const date = document.createElement('p');
+        const priority = document.createElement('p');
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('project-wrapper');
 
         title.textContent = item.title;
         description.textContent = item.description;
+        date.textContent = item.dueDate;
+        priority.textContent = item.priority;
 
         this.main.appendChild(title);
-        this.main.appendChild(description);
+        wrapper.appendChild(description);
+        wrapper.appendChild(date);
+        wrapper.appendChild(priority);
 
+        this.main.appendChild(wrapper);
+
+        // Check for subitems and create card
         if (item.items) {
             item.items.forEach(subItem => {
                 this.createSubCard(subItem);
@@ -123,12 +150,15 @@ class DomMaster {
     createSubCard(subItem) {
         const title = document.createElement('h3');
         const description = document.createElement('p');
+        const wrapper = document.createElement('div');
+        wrapper.classList.add("task-wrapper");
 
         title.textContent = subItem.title;
         description.textContent = subItem.description;
 
-        this.subMain.appendChild(title);
-        this.subMain.appendChild(description);
+        wrapper.appendChild(title);
+        wrapper.appendChild(description);
+        this.subMain.appendChild(wrapper);
     }
 
     clearList() {

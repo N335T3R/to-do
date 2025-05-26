@@ -84,6 +84,7 @@ header > h1 {
     user-select: pointer;
     cursor: pointer;
     color: var(--taskrGreen);
+    background-color: var(--taskrGreen);
 }
 .project-list > img {
     width: 1rem;
@@ -148,4 +149,10 @@ main > button {
 main > * > h2 {
     /* color: var(--taskrGreen); */
     font-family: clean;
+}
+.project-wrapper {
+    padding: 1rem;
+}
+.task-wrapper {
+    background-color: var(--taskrGreen);
 }
