@@ -103,10 +103,10 @@ header > h1 {
     min-height: fit-content;
     min-width: fit-content;
 }
-.new-project-modal, .new-task-modal > button {
+.new-project-modal > button, .new-task-modal > button {
     background-color: var(--taskrGreen);
 }
-.new-project-modal, .new-task-modal > h2 {
+.new-project-modal > h2, .new-task-modal > h2 {
     font-family: clean;
     letter-spacing: .1rem;
     margin: 1rem;
@@ -122,12 +122,12 @@ header > h1 {
 .new-project-form, .new-task-form {
     display: grid;
 }
-.new-project-form, .new-task-form > button {
+.new-project-form > button, .new-task-form > button {
     font-size: 1rem;
     background-color: var(--taskrGreen);
     min-width: 15rem;
 }
-.new-project-form, .new-task-form > input, textarea {
+.new-project-form > input, textarea, .new-task-form > input, textarea {
     margin-bottom: 1rem;
 }
 
