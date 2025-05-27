@@ -49,6 +49,23 @@ class StorageMaster {
         }
     }
 
+    // getSubItem() {}
+
+    // Needs tested
+    removeSubItem(key, value, subKey, subValue) {
+        // get item
+         let arr = JSON.parse(localStorage.getItem(`${this.key}`));
+         const item = arr.find((todo) => todo[key] === value);
+        // get subItem index
+         const itemArr = item.items;
+         const ind = itemArr.indexOf(itemArr.find((subItem) => subItem[subKey] === subValue));
+
+         if (ind !== -1) {
+            itemArr.splice(ind, 1);
+            this.updateStorage(arr);
+         }
+    }   
+
     addSubItem(key, value, subItem) {
         let item = this.getItem(key, value);
 
@@ -78,7 +95,7 @@ class StorageMaster {
 }
 
 class DomMaster {
-    constructor(storage, main = null, subMain = null, sidebar = null, list= null, closeBtn = null) {
+    constructor(storage, main = null, subMain = null, sidebar = null, list= null, closeBtn = null, newTaskModal = null, newTaskForm = null, taskProject) {
         this.storage = storage;
         this.main = main;
         this.mainContent = main.innerHTML;
@@ -86,26 +103,39 @@ class DomMaster {
         this.sidebar = sidebar;
         this.list = list;
         this.closeBtn = closeBtn;
+        this.newTaskModal = newTaskModal;
+        this.newTaskForm = newTaskForm;
+        this.taskProject = taskProject;
+        // cans refreshed in refreshList()
         this.cans = [];
+        // subCans refreshed in clearMain()
+        this.subCans = [];
     }
 
     clearMain() {
         this.main.innerHTML = "";
         this.subMain.innerHTML = "";
+        this.subCans = [];
     }
 
     restoreMain() {
         this.main.innerHTML = this.mainContent;
     }
 
-    refreshTasks() {
+    // used in ?
+    refreshTasks(item) {
         this.subMain.innerHTML = "";
+
+        const taskHeader = document.createElement('div');
+        taskHeader.classList.add("sub-tasks-header");
+        this.subMain.appendChild(taskHeader);
 
         const h = document.createElement('h2');
         h.textContent = "Tasks";
-        this.subMain.appendChild(h);
+        taskHeader.appendChild(h);
         
-        const newTaskBtn = document.createElement('button');
+        const newTaskBtn = document.createElement('img');
+        newTaskBtn.classList.add("new-task-btn");
         newTaskBtn.src = newGreen;
         newTaskBtn.addEventListener('mouseenter', () => {
             newTaskBtn.src = newWhite;
@@ -113,14 +143,19 @@ class DomMaster {
         newTaskBtn.addEventListener('mouseleave', () => {
             newTaskBtn.src = newGreen;
         });
+        taskHeader.appendChild(newTaskBtn);
+        newTaskBtn.addEventListener('click', () => {
+            this.newTaskModal.showModal();
+            this.taskProject.value = `${item.id}`
+        });
     }
 
     createMainCard(item) {
         this.clearMain();
-        this.refreshTasks();
+        this.refreshTasks(item);
 
         // Create Card
-        const title = document.createElement('h2');
+        const title = document.createElement('h1');
         const description = document.createElement('p');
         const date = document.createElement('p');
         const priority = document.createElement('p');
@@ -142,29 +177,51 @@ class DomMaster {
         // Check for subitems and create card
         if (item.items) {
             item.items.forEach(subItem => {
-                this.createSubCard(subItem);
+                this.createSubCard(item, subItem);
             });
         }
+
+
     }
 
-    createSubCard(subItem) {
+    createSubCard(item, subItem) {
         const title = document.createElement('h3');
         const description = document.createElement('p');
         const wrapper = document.createElement('div');
         wrapper.classList.add("task-wrapper");
+        const subCan = new Image();
+        subCan.src = trash;
 
+        // set text-content
         title.textContent = subItem.title;
         description.textContent = subItem.description;
 
+        // appendations
         wrapper.appendChild(title);
         wrapper.appendChild(description);
         this.subMain.appendChild(wrapper);
+
+        // trash can code
+        this.subCans.push(subCan);
+        subCan.classList.add("subcan");
+        wrapper.appendChild(subCan);
+
+        // addEventListener to trash can to {
+        // domMaster.removeSubItem(item, subItem);
+        //  ^^ OR ^^ (key, value, key, value);
+        // this.refreshTasks(item);
+        // }
+        subCan.addEventListener('click', () => {
+            // code for can
+        });
     }
 
+    // used in refreshList()
     clearList() {
         this.list.innerHTML = "";
     }
 
+    // unsure if used
     listAppend(title, id) {
         // data-id require for click event to send to-do
         // to StorageMaster to find To-Do
@@ -177,6 +234,7 @@ class DomMaster {
         this.list.appendChild(li);
     }
 
+    // used in this.refreshList()
     createLi(item) {
         let li = document.createElement('li');
         
@@ -192,6 +250,7 @@ class DomMaster {
         return li;
     }
 
+    // Not used
     removeFromList(data) {
         const li = document.querySelector(`[data-id='${data}']`);
         document.removeChild(li);
@@ -245,11 +304,14 @@ function mainFuncton() {
         document.getElementById("sub-tasks-div"), 
         document.getElementById("sidebar"), 
         document.getElementById("project-list"), 
-        document.getElementById('close-btn'));
+        document.getElementById('close-btn'),
+        document.getElementById("new-task-modal"),
+        document.getElementById("new-task-form"),
+        document.getElementById("taskProject"));
 
+        console.log(document.getElementById('new-task-modal'));
 
-
-    // Button eventListeners
+    // Project Modal eventListeners
     const newProjectBtn = document.getElementById('new-btn');
     const newProjectModal = document.getElementById('new-project-modal')
     const closeProjectModal = document.getElementById("close-project-modal");
@@ -270,7 +332,6 @@ function mainFuncton() {
     closeProjectModal.addEventListener('click', () => {
         newProjectModal.close();
     });
-
 
     // Process New Project Form
     const newProjectForm = document.getElementById('new-project-form');
@@ -295,6 +356,20 @@ function mainFuncton() {
     });
 
     
+    // Task Modal Event Listeners 
+    const taskCloseBtn = document.getElementById("close-task-modal");
+    taskCloseBtn.addEventListener('click', () => {
+        domMaster.newTaskModal.close();
+    });
+    domMaster.newTaskForm.addEventListener('submit', () => {
+        e.preventDefault();
+        domMaster.newTaskModal.close();
+
+        const formData = new FormData(newProjectForm);
+        const obj = Object.fromEntries(formData);
+
+        console.log(obj);
+    });
 
 
 
@@ -318,6 +393,6 @@ function mainFuncton() {
     domMaster.refreshList(storageMaster.returnArray());
     domMaster.createMainCard(storageMaster.getItem('title', "Paint"));
 
-    console.log(domMaster.storage);
+    console.log(domMaster.newTaskModal)
 }
 mainFuncton();

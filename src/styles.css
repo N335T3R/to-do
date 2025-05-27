@@ -92,7 +92,7 @@ header > h1 {
 
 
 
-.new-project-modal {
+.new-project-modal, .new-task-modal {
     place-self: center;
     padding: 1rem;
     background-color: #333;
@@ -101,31 +101,33 @@ header > h1 {
     justify-items: center;
     /* scrollbar-width: none; */
     min-height: fit-content;
+    min-width: fit-content;
 }
-.new-project-modal > button {
+.new-project-modal, .new-task-modal > button {
     background-color: var(--taskrGreen);
 }
-.new-project-modal > h2 {
+.new-project-modal, .new-task-modal > h2 {
     font-family: clean;
     letter-spacing: .1rem;
     margin: 1rem;
 }
-.new-project-modal::backdrop {
+.new-project-modal::backdrop, .new-task-modal::backdrop {
     background-color: rgba(0, 0, 0, 0.5);  
 }
-.close-project-modal {
+.close-project-modal, .close-task-modal {
     position: absolute;
     right: 0;
     top: 0;
 }
-.new-project-form {
+.new-project-form, .new-task-form {
     display: grid;
 }
-.new-project-form > button {
+.new-project-form, .new-task-form > button {
     font-size: 1rem;
     background-color: var(--taskrGreen);
+    min-width: 15rem;
 }
-.new-project-form > input, textarea {
+.new-project-form, .new-task-form > input, textarea {
     margin-bottom: 1rem;
 }
 
@@ -141,18 +143,48 @@ main > button {
     position: absolute;
     right: 1rem;
     top: 1rem;
-    border: none;
+    border-radius: 0.35rem;
+    border: 0.15rem solid #333;
     background-color: var(--taskrGreen);
-    border-radius: 0.15rem;
     cursor: pointer;
 }
-main > * > h2 {
+main > * > h2, h1 {
     /* color: var(--taskrGreen); */
     font-family: clean;
 }
 .project-wrapper {
     padding: 1rem;
+    border-radius: 0.5rem;
+    border: 0.15rem solid #333;
+    background-color: var(--taskrGreen);
+}
+.sub-tasks-header {
+    display: flex;
+    justify-content: space-between;
+}
+.sub-tasks-header > h2 {
+    font-family: clean;
+}
+.sub-tasks-header > img {
+    width: 3rem;
+    height: 2.2rem;
+}
+.new-task-btn {
+    width: 2rem;
 }
 .task-wrapper {
+    display: grid;
+    grid-template-columns: 4rem 1fr 4rem;
+    padding: 1rem;
+    border-radius: .5rem;
+    border: .15rem solid #333;
     background-color: var(--taskrGreen);
+}
+.task-wrapper > h3, p {
+    grid-column: 2;
+}   
+.subcan {
+    grid-column: 3;
+    max-width: 2rem;
+    place-self: center;
 }

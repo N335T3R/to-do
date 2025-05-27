@@ -23,6 +23,7 @@
     </div>
 
 
+    <!-- project form modal -->
     <dialog id="new-project-modal" class="new-project-modal">
         <button class="close-project-modal" id="close-project-modal">X</button>
 
@@ -46,6 +47,32 @@
 
 
     <main>
+        <!-- task form modal -->
+        <dialog id="new-task-modal" class="new-task-modal">
+            <button class="close-task-modal" id="close-task-modal">X</button>
+
+            <h2>New Task</h2>
+            <form action="GET" class="new-task-form" id="new-task-form">
+                <label for="taskProject">Project</label>
+                <input type="text" name="taskProject" class="taskProject" id="taskProject" readonly>
+
+                <label for="taskTitle">Title</label>
+                <input required type="text" name="tasktTitle" id="taskTitle" placeholder="Task Title">
+
+                <label for="taskDescription">Description</label>
+                <textarea required type="text" name="taskDescription" id="taskDescription" placeholder="This is a description of my task"></textarea>
+
+                <label for="taskDueDate">Due Date</label>
+                <input type="date" name="taskDueDate" id="taskDueDate">
+
+                <label for="taskPriority">Priority</label>
+                <input type="radio">
+
+                <button type="submit" class="taskSubmit" id="taskSubmit">Submit</button>
+            </form>
+        </dialog>
+
+        <!-- main content -->
         <button class="close-btn" id="close-btn" type="button">X</button>
         <div class="project-info-div" id="project-info-div"></div>
         <div class="sub-tasks-div" id="sub-tasks-div"></div>
