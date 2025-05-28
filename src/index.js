@@ -3,7 +3,64 @@ import newWhite from "./assets/images/new-white.png";
 import newGreen from "./assets/images/new_green.png";
 import trash from "./assets/images/trash-white.png";
 import trashGreen from "./assets/images/trash-green.png";
+import trashBlack from "./assets/images/trash-black.png";
 // Find a way to wrap this in a MAIN FUNCTION
+
+function dateMonthDD(date) {
+    let arr = [...date];
+
+    arr.forEach((char) => {
+        if (char === "-") arr.splice(arr.indexOf(char), 1);
+    });
+
+    const month = arr.slice(4, 6).join("");
+
+    const obj = {
+        year: arr.slice(0, 4).join(""),
+        day: arr.slice(6, arr.length).join("")
+    }
+
+    switch(month) {
+        case "01":
+            obj.month = "JAN";
+            break;
+        case "02":
+            obj.month = "FEB";
+            break;
+        case "03":
+            obj.month = "MAR";
+            break;
+        case "04":
+            obj.month = "APR";
+            break;
+        case "05":
+            obj.month = "MAY";
+            break;
+        case "06":
+            obj.month = "JUN";
+            break;
+        case "07":
+            obj.month = "JUL";
+            break;
+        case "08":
+            obj.month = "AUG";
+            break;
+        case "09":
+            obj.month = "SEP";
+            break;
+        case "10":
+            obj.month = "OCT";
+            break;
+        case "11":
+            obj.month = "NOV";
+            break;
+        case "12":
+            obj.month = "DEC";
+            break;
+    }
+
+    return obj;
+}
 
 
 class ListItem {
@@ -166,11 +223,30 @@ class DomMaster {
         // Create Card
         const title = document.createElement('h1');
         const description = document.createElement('p');
-        const date = document.createElement('p');
         const priority = document.createElement('p');
         const wrapper = document.createElement('div');
         wrapper.classList.add('project-wrapper');
 
+        // date
+        const dateWrapper = document.createElement('div');
+        dateWrapper.classList.add('date-wrapper');
+        const date = dateMonthDD(item.dueDate);
+        const month = document.createElement('h3');
+        month.classList.add("month");
+        month.textContent = date.month;
+        const day = document.createElement('p');
+        day.classList.add("day");
+        day.textContent = date.day;
+        const year = document.createElement('h4');
+        year.classList.add('year');
+        year.textContent = date.year;
+
+        dateWrapper.appendChild(day);
+        dateWrapper.appendChild(month);
+        dateWrapper.appendChild(year);
+
+
+        // textContent and appendations 
         title.textContent = item.title;
         description.textContent = item.description;
         date.textContent = item.dueDate;
@@ -178,7 +254,7 @@ class DomMaster {
 
         this.main.appendChild(title);
         wrapper.appendChild(description);
-        wrapper.appendChild(date);
+        wrapper.appendChild(dateWrapper);
         wrapper.appendChild(priority);
 
         this.main.appendChild(wrapper);
@@ -189,8 +265,6 @@ class DomMaster {
                 this.createSubCard(item, subItem);
             });
         }
-
-
     }
 
     createSubCard(item, subItem) {
@@ -199,7 +273,25 @@ class DomMaster {
         const wrapper = document.createElement('div');
         wrapper.classList.add("task-wrapper");
         const subCan = new Image();
-        subCan.src = trash;
+        subCan.src = trashBlack;
+        
+        const dateWrapper = document.createElement('div');
+        dateWrapper.classList.add('date-wrapper');
+        const date = dateMonthDD(subItem.dueDate);
+        const month = document.createElement('h3');
+        month.classList.add("month");
+        month.textContent = date.month;
+        const day = document.createElement('p');
+        day.classList.add("day");
+        day.textContent = date.day;
+        const year = document.createElement('h4');
+        year.classList.add('year');
+        year.textContent = date.year;
+
+        dateWrapper.appendChild(day);
+        dateWrapper.appendChild(month);
+        dateWrapper.appendChild(year);
+    
 
         // set text-content
         title.textContent = subItem.title;
@@ -208,6 +300,7 @@ class DomMaster {
         // appendations
         wrapper.appendChild(title);
         wrapper.appendChild(description);
+        wrapper.appendChild(dateWrapper);
         this.subMain.appendChild(wrapper);
 
         // trash can code
@@ -220,8 +313,16 @@ class DomMaster {
         //  ^^ OR ^^ (key, value, key, value);
         // this.refreshTasks(item);
         // }
+        subCan.addEventListener('mouseenter', () => {
+            subCan.src = trash;
+        });
+        subCan.addEventListener('mouseleave', () => {
+            subCan.src = trashBlack;
+        });
         subCan.addEventListener('click', () => {
             // code for can
+            this.storage.removeSubItem("id", item.id, "id", subItem.id);
+            this.createMainCard(item);
         });
     }
 
@@ -401,15 +502,18 @@ function mainFuncton() {
         new ListItem({
             title: "Study Piano",
             description: "Work on scales",
+            dueDate: "2025-07-31"
         }));
     storageMaster.addItem(
         new ListItem({
         title: "Paint",
         description: "Do a Caravaggio master copy",
+        dueDate: "2025-05-29"
     }));
     storageMaster.addSubItem("title", "Paint", {
         title: "Sketch design",
         description: "Paintings don't compose themselves",
+        dueDate: '2025-05-29'
     });
 
 
