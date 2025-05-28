@@ -47,29 +47,29 @@
 
 
             <!-- task form modal -->
-        <dialog id="new-task-modal" class="new-task-modal">
-            <button class="close-task-modal" id="close-task-modal">X</button>
+    <dialog id="new-task-modal" class="new-task-modal">
+        <button class="close-task-modal" id="close-task-modal">X</button>
 
-            <h2>New Task</h2>
-            <form action="GET" class="new-task-form" id="new-task-form">
-                <label for="project">Project</label>
-                <input type="text" name="project" class="project" id="project" readonly>
+        <h2>New Task</h2>
+        <form action="GET" class="new-task-form" id="new-task-form">
+            <label for="project">Project</label>
+            <input type="text" name="project" class="project" id="project" readonly>
 
-                <label for="title">Title</label>
-                <input required type="text" name="title" id="title" placeholder="Task Title">
+            <label for="title">Title</label>
+            <input required type="text" name="title" id="title" placeholder="Task Title">
 
-                <label for="description">Description</label>
-                <textarea required type="text" name="description" id="description" placeholder="This is a description of my task"></textarea>
+            <label for="description">Description</label>
+            <textarea required type="text" name="description" id="description" placeholder="This is a description of my task"></textarea>
 
-                <label for="dueDate">Due Date</label>
-                <input type="date" name="dueDate" id="dueDate">
+            <label for="dueDate">Due Date</label>
+            <input type="date" name="dueDate" id="dueDate">
 
-                <label for="priority">Priority</label>
-                <input type="radio">
+            <label for="priority">Priority</label>
+            <input type="radio">
 
-                <button type="submit" class="taskSubmit" id="taskSubmit">Submit</button>
-            </form>
-        </dialog>
+            <button type="submit" class="taskSubmit" id="taskSubmit">Submit</button>
+        </form>
+    </dialog>
 
 
     <main>

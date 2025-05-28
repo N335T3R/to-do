@@ -83,6 +83,7 @@ class StorageMaster {
 
          let arr = JSON.parse(localStorage.getItem(`${this.key}`));
          this.updateStorage(arr);
+         console.log(this.returnArray());
     }
 
     returnArray() {
@@ -153,10 +154,15 @@ class DomMaster {
         });
     }
 
+    // passing item passes the item as it was when
+    // the eventListener in createLi was applied
     createMainCard(item) {
         this.clearMain();
         this.refreshTasks(item);
 
+        // replace item with most updated version
+        // by getting item directly from storage
+        item = this.storage.getItem("id", `${item.id}`);
         // Create Card
         const title = document.createElement('h1');
         const description = document.createElement('p');
@@ -376,8 +382,7 @@ function mainFuncton() {
 
         console.log(obj);
 
-        storageMaster.addSubItem("id", obj.project, obj);
-
+        domMaster.storage.addSubItem("id", obj.project, obj);
         domMaster.createMainCard(storageMaster.getItem("id", obj.project));
     });
 
