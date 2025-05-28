@@ -80,6 +80,9 @@ class StorageMaster {
             item.items.push(subItem);
             this.addItem(item);
         }
+
+         let arr = JSON.parse(localStorage.getItem(`${this.key}`));
+         this.updateStorage(arr);
     }
 
     returnArray() {
@@ -307,7 +310,7 @@ function mainFuncton() {
         document.getElementById('close-btn'),
         document.getElementById("new-task-modal"),
         document.getElementById("new-task-form"),
-        document.getElementById("taskProject"));
+        document.getElementById("project"));
 
         console.log(document.getElementById('new-task-modal'));
 
@@ -361,16 +364,32 @@ function mainFuncton() {
     taskCloseBtn.addEventListener('click', () => {
         domMaster.newTaskModal.close();
     });
-    domMaster.newTaskForm.addEventListener('submit', () => {
+    domMaster.newTaskForm.addEventListener('submit', (e) => {
         e.preventDefault();
         domMaster.newTaskModal.close();
 
-        const formData = new FormData(newProjectForm);
+        const formData = new FormData(domMaster.newTaskForm);
         const obj = Object.fromEntries(formData);
 
+        
+        obj.id  = crypto.randomUUID();
+
         console.log(obj);
+
+        storageMaster.addSubItem("id", obj.project, obj);
+
+        domMaster.createMainCard(storageMaster.getItem("id", obj.project));
     });
 
+
+
+
+
+
+
+
+
+    // execution
 
 
     storageMaster.firstTodo(
@@ -394,5 +413,6 @@ function mainFuncton() {
     domMaster.createMainCard(storageMaster.getItem('title', "Paint"));
 
     console.log(domMaster.newTaskModal)
+
 }
 mainFuncton();
