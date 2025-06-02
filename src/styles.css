@@ -140,7 +140,7 @@ header > h1 {
 
 main {
     display: grid;
-    grid-template-rows: 40% 1fr;
+    grid-template-rows: minmax(10rem, 40%) 1fr;
     gap: 1rem;
     padding: 2rem;
     max-height: 100%;

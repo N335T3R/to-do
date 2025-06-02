@@ -64,11 +64,10 @@ function dateMonthDD(date) {
 
 
 class ListItem {
-    constructor ({ title, description, dueDate, priority }) {
+    constructor ({ title, description, dueDate }) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.priority = priority;
         this.id = crypto.randomUUID();
     }
 }
@@ -223,7 +222,6 @@ class DomMaster {
         // Create Card
         const title = document.createElement('h1');
         const description = document.createElement('p');
-        const priority = document.createElement('p');
         const wrapper = document.createElement('div');
         wrapper.classList.add('project-wrapper');
 
@@ -250,12 +248,10 @@ class DomMaster {
         title.textContent = item.title;
         description.textContent = item.description;
         date.textContent = item.dueDate;
-        priority.textContent = item.priority;
 
         this.main.appendChild(title);
         wrapper.appendChild(description);
         wrapper.appendChild(dateWrapper);
-        wrapper.appendChild(priority);
 
         this.main.appendChild(wrapper);
 
@@ -457,7 +453,6 @@ function mainFuncton() {
             title: obj.projectTitle,
             description: obj.projectDescription,
             dueDate: obj.projectDueDate,
-            priority: obj.projectPriority
         });
 
         // create new Project
